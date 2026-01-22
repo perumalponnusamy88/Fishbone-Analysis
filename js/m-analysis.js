@@ -31,6 +31,13 @@ function renderList() {
   const container = document.getElementById("problemList");
   container.innerHTML = "";
 
+if (!data.analysis[m] || data.analysis[m].length === 0) {
+  container.innerHTML =
+    "<p class='muted'>No problems added yet.</p>";
+  return;
+}
+
+
   data.analysis[m].forEach(p => {
     const div = document.createElement("div");
     div.className = "card";
