@@ -1,16 +1,28 @@
-const problemId = "FB-" + Date.now();
+let problemId = null;
 
 document.getElementById("problemId").innerText =
   "Problem ID: " + problemId;
 
 function saveProblem() {
+
+  // If new problem, generate ID once
+  if (!problemId) {
+    problemId = "FB-" + Date.now();
+    addToProblemIndex(problemId);
+  }
+
   const data = {
     problemId,
-    statement: document.getElementById("problemStatement").value,
-    justification: document.getElementById("problemJustification").value,
+    statement: problemStatement.value,
+    justification: problemJustification.value,
     createdAt: new Date().toISOString(),
     analysis: {}
   };
+
+  saveToStorage(problemId, data);
+  toast("Problem saved successfully");
+}
+
 
   saveToStorage(problemId, data);
   alert("Problem saved successfully");
