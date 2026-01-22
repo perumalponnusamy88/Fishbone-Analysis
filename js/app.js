@@ -74,4 +74,4 @@ function openProblem(pid) {
   problemStatement.value = data.statement || "";
   problemJustification.value = data.justification || "";
 }
-
+loadExistingProblems();
