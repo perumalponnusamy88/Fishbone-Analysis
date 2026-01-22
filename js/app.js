@@ -213,3 +213,16 @@ const activePid = getActiveProblem();
 if (activePid) {
   openProblem(activePid);
 }
+/***********************
+ * RESTORE ACTIVE PROBLEM ON LOAD
+ ***********************/
+const activePid = getActiveProblem();
+
+if (activePid) {
+  const existing = loadFromStorage(activePid);
+  if (existing) {
+    openProblem(activePid);
+  } else {
+    localStorage.removeItem("activeProblemId");
+  }
+}
