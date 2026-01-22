@@ -39,3 +39,14 @@ textarea {
 .tabs {
   margin-top: 20px;
 }
+input, textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 8px 14px;
+  margin-top: 5px;
+  cursor: pointer;
+}
