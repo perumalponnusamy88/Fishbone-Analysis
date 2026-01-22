@@ -25,5 +25,5 @@ function openConsolidated() {
 }
 
 function openFishbone() {
-  alert("Fishbone Diagram – Phase 2");
+  window.location.href = `fishbone.html?pid=${problemId}`;
 }
