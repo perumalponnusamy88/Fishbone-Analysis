@@ -22,13 +22,15 @@ function saveProblem() {
     addToProblemIndex(problemId);
   }
 
-  const data = {
-    problemId,
-    statement: problemStatement.value,
-    justification: problemJustification.value,
-    createdAt: new Date().toISOString(),
-    analysis: loadFromStorage(problemId)?.analysis || {}
-  };
+const data = {
+  problemId,
+  statement: problemStatement.value,
+  justification: problemJustification.value,
+  createdAt: data?.createdAt || new Date().toISOString(),
+  lastUpdated: new Date().toISOString(),
+  status: "In Progress",
+  analysis: loadFromStorage(problemId)?.analysis || {}
+};
 
   saveToStorage(problemId, data);
 
@@ -66,7 +68,10 @@ function openFishbone() {
   if (!ensureProblemSelected()) return;
   window.location.href = `fishbone.html?pid=${problemId}`;
 }
-
+const activePid = getActiveProblem();
+if (activePid) {
+  openProblem(activePid);
+}
 // Load existing problems
 function loadExistingProblems() {
   const list = document.getElementById("problemList");
@@ -100,6 +105,8 @@ function openProblem(pid) {
   if (!data) return;
 
   problemId = pid;
+  setActiveProblem(pid);
+
   problemIdEl.innerText = "Problem ID: " + pid;
   problemStatement.value = data.statement || "";
   problemJustification.value = data.justification || "";
@@ -107,3 +114,11 @@ function openProblem(pid) {
 
 // Init
 loadExistingProblems();
+
+function setActiveProblem(pid) {
+  localStorage.setItem("activeProblemId", pid);
+}
+
+function getActiveProblem() {
+  return localStorage.getItem("activeProblemId");
+}
