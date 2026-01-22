@@ -35,7 +35,7 @@ function renderTable() {
         <td>${p.actionPlan.preventive}</td>
         <td>${p.actionPlan.owner}</td>
         <td>${p.actionPlan.targetDate}</td>
-        <td>${p.actionPlan.status}</td>
+        <td class="status-${p.actionPlan.status}">${p.actionPlan.status}</td>
       </tr>`;
     });
   }
