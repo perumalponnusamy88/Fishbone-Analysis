@@ -13,10 +13,41 @@
   <h1>Fishbone Analysis</h1>
   <span id="problemId"></span>
 </header>
+  <section class="card">
+  <h3>Start Analysis</h3>
+
+  <label>
+    <input type="radio" name="mode" value="new" checked onchange="toggleMode()">
+    New Analysis
+  </label>
+
+  <label>
+    <input type="radio" name="mode" value="existing" onchange="toggleMode()">
+    Existing Analysis
+  </label>
+
+  <div id="existingSelector" style="display:none;">
+    <label>Select Existing Problem</label>
+    <select id="existingDropdown" onchange="loadSelectedProblem()"></select>
+  </div>
+</section>
+
 <section class="card">
   <h3>Existing Problems</h3>
   <div id="problemList"></div>
 </section>
+  <label>Account</label>
+<input id="account" placeholder="Eg: PEPSI">
+
+<label>Month-Year</label>
+<input id="month" placeholder="MM-YY (Eg: 01-26)">
+
+<label>Done By</label>
+<input id="doneBy">
+
+<label>Account Manager</label>
+<input id="accountManager">
+
 <section class="card">
   <label>Problem Statement</label>
   <textarea id="problemStatement"></textarea>
