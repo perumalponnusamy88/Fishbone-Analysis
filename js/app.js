@@ -1,9 +1,11 @@
 let problemId = null;
 
 // DOM references
-const problemIdEl = document.getElementById("problemId");
-const problemStatement = document.getElementById("problemStatement");
-const problemJustification = document.getElementById("problemJustification");
+const accountInput = document.getElementById("account");
+const monthInput = document.getElementById("month");
+const doneByInput = document.getElementById("doneBy");
+const accountManagerInput = document.getElementById("accountManager");
+
 
 // Initial UI state
 problemIdEl.innerText = "No problem selected";
@@ -11,14 +13,45 @@ problemIdEl.innerText = "No problem selected";
 // Save or update problem
 function saveProblem() {
 
-  if (!problemStatement.value.trim()) {
-    alert("Please enter a problem statement");
-    return;
+  if (!problemId) {
+    problemId = generateProblemId();
+    if (!problemId) return;
+
+    addToProblemIndex(problemId);
   }
+
+  const data = {
+    problemId,
+    account: accountInput.value,
+    month: monthInput.value,
+    doneBy: doneByInput.value,
+    accountManager: accountManagerInput.value,
+    status: "In Progress",
+    createdAt: new Date().toISOString(),
+    lastUpdated: new Date().toISOString(),
+    analysis: loadFromStorage(problemId)?.analysis || {}
+  };
+
+  saveToStorage(problemId, data);
+  setActiveProblem(problemId);
+  loadExistingProblems();
+}
+
 
   // Generate ID only once
   if (!problemId) {
-    problemId = "FB-" + Date.now();
+ function generateProblemId() {
+  const account = accountInput.value.trim().toUpperCase();
+  const month = monthInput.value.trim();
+
+  if (!account || !month) {
+    alert("Account and Month-Year are required");
+    return null;
+  }
+
+  return `${account}_${month}`;
+}
+
     addToProblemIndex(problemId);
   }
 
@@ -127,4 +160,32 @@ function setActiveProblem(pid) {
 
 function getActiveProblem() {
   return localStorage.getItem("activeProblemId");
+}
+function toggleMode() {
+  const mode = document.querySelector("input[name='mode']:checked").value;
+  document.getElementById("existingSelector").style.display =
+    mode === "existing" ? "block" : "none";
+}
+
+function loadExistingProblemsIntoDropdown() {
+  const dropdown = document.getElementById("existingDropdown");
+  const index = getProblemIndex();
+
+  dropdown.innerHTML = "<option value=''>Select...</option>";
+
+  index.forEach(pid => {
+    const data = loadFromStorage(pid);
+    if (!data) return;
+
+    const option = document.createElement("option");
+    option.value = pid;
+    option.textContent = `${pid} (${data.status || "In Progress"})`;
+    dropdown.appendChild(option);
+  });
+}
+
+function loadSelectedProblem() {
+  const pid = document.getElementById("existingDropdown").value;
+  if (!pid) return;
+  openProblem(pid);
 }
