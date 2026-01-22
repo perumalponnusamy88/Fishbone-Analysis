@@ -15,13 +15,11 @@ const monthInput = document.getElementById("month");
 const doneByInput = document.getElementById("doneBy");
 const accountManagerInput = document.getElementById("accountManager");
 
-/***********************
- * INITIAL UI STATE
- ***********************/
-problemIdEl.innerText = "No problem selected";
+const existingSelector = document.getElementById("existingSelector");
+const existingDropdown = document.getElementById("existingDropdown");
 
 /***********************
- * HELPERS
+ * BASIC HELPERS
  ***********************/
 function setActiveProblem(pid) {
   localStorage.setItem("activeProblemId", pid);
@@ -31,30 +29,27 @@ function getActiveProblem() {
   return localStorage.getItem("activeProblemId");
 }
 
-function generateProblemId() {
-  const account = accountInput.value.trim().toUpperCase();
-  const month = monthInput.value.trim();
-
-  if (!account || !month) {
-    alert("Account and Month-Year are required");
-    return null;
-  }
-
-  return `${account}_${month}`;
+/***********************
+ * MODE TOGGLE
+ ***********************/
+function toggleMode() {
+  const mode = document.querySelector("input[name='mode']:checked").value;
+  existingSelector.style.display = mode === "existing" ? "block" : "none";
 }
 
 /***********************
- * SAVE / UPDATE PROBLEM
+ * SAVE PROBLEM
  ***********************/
 function saveProblem() {
-
-  if (!problemId) {
-    problemId = generateProblemId();
-    if (!problemId) return;
-    addToProblemIndex(problemId);
+  if (!problemStatement.value.trim()) {
+    alert("Please enter a problem statement");
+    return;
   }
 
-  const existing = loadFromStorage(problemId);
+  if (!problemId) {
+    problemId = "FB-" + Date.now();
+    addToProblemIndex(problemId);
+  }
 
   const data = {
     problemId,
@@ -64,10 +59,7 @@ function saveProblem() {
     accountManager: accountManagerInput.value,
     statement: problemStatement.value,
     justification: problemJustification.value,
-    status: existing?.status || "In Progress",
-    createdAt: existing?.createdAt || new Date().toISOString(),
-    lastUpdated: new Date().toISOString(),
-    analysis: existing?.analysis || {}
+    analysis: loadFromStorage(problemId)?.analysis || {}
   };
 
   saveToStorage(problemId, data);
@@ -77,53 +69,14 @@ function saveProblem() {
 
   loadExistingProblems();
   loadExistingProblemsIntoDropdown();
-
-  if (typeof toast === "function") {
-    toast("Problem saved successfully");
-  } else {
-    alert("Problem saved successfully");
-  }
 }
 
 /***********************
- * NAVIGATION GUARD
- ***********************/
-function ensureProblemSelected() {
-  if (!problemId) {
-    alert("Please save or open a problem first");
-    return false;
-  }
-  return true;
-}
-
-function openM(mName) {
-  if (!ensureProblemSelected()) return;
-  window.location.href = `m-analysis.html?pid=${problemId}&m=${mName}`;
-}
-
-function openConsolidated() {
-  if (!ensureProblemSelected()) return;
-  window.location.href = `consolidated.html?pid=${problemId}`;
-}
-
-function openFishbone() {
-  if (!ensureProblemSelected()) return;
-  window.location.href = `fishbone.html?pid=${problemId}`;
-}
-
-/***********************
- * EXISTING PROBLEMS (CARD LIST)
+ * LOAD EXISTING PROBLEMS (CARDS)
  ***********************/
 function loadExistingProblems() {
   const list = document.getElementById("problemList");
-  if (!list) return;
-
-  let index = getProblemIndex();
-
-  // Migration safety
-  if (!index.length && typeof rebuildProblemIndex === "function") {
-    index = rebuildProblemIndex();
-  }
+  const index = getProblemIndex();
 
   if (!index.length) {
     list.innerHTML = "<p class='muted'>No existing problems</p>";
@@ -140,17 +93,35 @@ function loadExistingProblems() {
     div.className = "card";
     div.innerHTML = `
       <strong>${pid}</strong><br>
-      <small>${data.statement || "No statement yet"}</small><br>
-      <small>Status: <b>${data.status || "In Progress"}</b></small><br>
-      <small>Last Updated: ${new Date(data.lastUpdated).toLocaleString()}</small><br>
-      <button class="secondary" onclick="openProblem('${pid}')">Resume</button>
+      <small>${data.statement || ""}</small><br>
+      <button class="secondary" onclick="openProblem('${pid}')">Open</button>
     `;
     list.appendChild(div);
   });
 }
 
 /***********************
- * OPEN EXISTING PROBLEM
+ * DROPDOWN
+ ***********************/
+function loadExistingProblemsIntoDropdown() {
+  existingDropdown.innerHTML = "<option value=''>Select...</option>";
+
+  getProblemIndex().forEach(pid => {
+    const option = document.createElement("option");
+    option.value = pid;
+    option.textContent = pid;
+    existingDropdown.appendChild(option);
+  });
+}
+
+function loadSelectedProblem() {
+  const pid = existingDropdown.value;
+  if (!pid) return;
+  openProblem(pid);
+}
+
+/***********************
+ * OPEN PROBLEM
  ***********************/
 function openProblem(pid) {
   const data = loadFromStorage(pid);
@@ -165,46 +136,33 @@ function openProblem(pid) {
   monthInput.value = data.month || "";
   doneByInput.value = data.doneBy || "";
   accountManagerInput.value = data.accountManager || "";
-
   problemStatement.value = data.statement || "";
   problemJustification.value = data.justification || "";
 }
 
 /***********************
- * NEW vs EXISTING MODE
+ * NAVIGATION
  ***********************/
-function toggleMode() {
-  const mode = document.querySelector("input[name='mode']:checked").value;
-  document.getElementById("existingSelector").style.display =
-    mode === "existing" ? "block" : "none";
+function openM(m) {
+  if (!problemId) {
+    alert("Save or open a problem first");
+    return;
+  }
+  window.location.href = `m-analysis.html?pid=${problemId}&m=${m}`;
 }
 
-function loadExistingProblemsIntoDropdown() {
-  const dropdown = document.getElementById("existingDropdown");
-  if (!dropdown) return;
-
-  const index = getProblemIndex();
-  dropdown.innerHTML = "<option value=''>Select...</option>";
-
-  index.forEach(pid => {
-    const data = loadFromStorage(pid);
-    if (!data) return;
-
-    const option = document.createElement("option");
-    option.value = pid;
-    option.textContent = `${pid} (${data.status || "In Progress"})`;
-    dropdown.appendChild(option);
-  });
+function openConsolidated() {
+  if (!problemId) return alert("Save or open a problem first");
+  window.location.href = `consolidated.html?pid=${problemId}`;
 }
 
-function loadSelectedProblem() {
-  const pid = document.getElementById("existingDropdown").value;
-  if (!pid) return;
-  openProblem(pid);
+function openFishbone() {
+  if (!problemId) return alert("Save or open a problem first");
+  window.location.href = `fishbone.html?pid=${problemId}`;
 }
 
 /***********************
- * INIT
+ * INIT (ONLY ONCE)
  ***********************/
 loadExistingProblems();
 loadExistingProblemsIntoDropdown();
@@ -212,17 +170,4 @@ loadExistingProblemsIntoDropdown();
 const activePid = getActiveProblem();
 if (activePid) {
   openProblem(activePid);
-}
-/***********************
- * RESTORE ACTIVE PROBLEM ON LOAD
- ***********************/
-const activePid = getActiveProblem();
-
-if (activePid) {
-  const existing = loadFromStorage(activePid);
-  if (existing) {
-    openProblem(activePid);
-  } else {
-    localStorage.removeItem("activeProblemId");
-  }
 }
