@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>5 Why Analysis</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <h2>5 Why Analysis</h2>
+  <span id="problemText"></span>
+</header>
+
+<section class="card">
+  <label>Why 1</label><input id="w1">
+  <label>Why 2</label><input id="w2">
+  <label>Why 3</label><input id="w3">
+  <label>Why 4</label><input id="w4">
+  <label>Why 5</label><input id="w5">
+
+  <label>Final / Root Cause</label>
+  <textarea id="rootCause"></textarea>
+
+  <label>Impact Percentage</label>
+  <input type="number" id="impact" min="0" max="100">
+
+  <button onclick="saveFiveWhy()">Save Analysis</button>
+</section>
+
+<button onclick="goBack()">⬅ Back</button>
+
+<script src="js/storage.js"></script>
+<script src="js/five-why.js"></script>
+</body>
+</html>
