@@ -50,3 +50,14 @@ button {
   margin-top: 5px;
   cursor: pointer;
 }
+#diagramContainer {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  overflow-x: auto;
+}
+
+svg {
+  border: 1px solid #ddd;
+}
+
