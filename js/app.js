@@ -21,7 +21,7 @@ function openM(mName) {
 }
 
 function openConsolidated() {
-  alert("Consolidated Action Plan – Phase 2");
+  window.location.href = `consolidated.html?pid=${problemId}`;
 }
 
 function openFishbone() {
