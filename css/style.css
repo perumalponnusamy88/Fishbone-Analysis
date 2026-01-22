@@ -1,55 +1,53 @@
-/***********************
- * THEME VARIABLES
- ***********************/
-:root {
-  --primary: #1f3c88;
-  --accent: #ff9800;
-  --danger: #e53935;
-  --success: #4caf50;
-
-  --text: #2b2b2b;
-  --muted: #6b7280;
-  --card: #ffffff;
+/* ======================
+   BASE RESET
+   ====================== */
+* {
+  box-sizing: border-box;
 }
 
-/***********************
- * BASE
- ***********************/
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #f4f6f9;
+  font-family: "Segoe UI", system-ui, sans-serif;
   margin: 0;
   padding: 20px;
-  color: var(--text);
 }
 
+/* ======================
+   HEADER
+   ====================== */
 header {
   background: linear-gradient(90deg, var(--primary), #3f51b5);
-  color: white;
-  padding: 18px 22px;
+  color: #fff;
+  padding: 16px 20px;
   border-radius: 14px;
   margin-bottom: 20px;
+}
+
+header h1,
+header h2 {
+  margin: 0;
 }
 
 header span {
-  font-size: 14px;
+  display: block;
+  font-size: 13px;
   opacity: 0.9;
+  margin-top: 4px;
 }
 
-/***********************
- * CARDS
- ***********************/
+/* ======================
+   CARD
+   ====================== */
 .card {
   background: var(--card);
   border-radius: 14px;
-  padding: 22px;
+  padding: 20px;
   margin-bottom: 20px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
 }
 
-/***********************
- * FORMS
- ***********************/
+/* ======================
+   FORMS
+   ====================== */
 label {
   font-weight: 600;
   margin-top: 12px;
@@ -60,12 +58,12 @@ input,
 textarea,
 select {
   width: 100%;
-  box-sizing: border-box;
-  border-radius: 10px;
-  border: 1px solid #ddd;
   padding: 10px;
-  margin-bottom: 10px;
-  transition: 0.2s;
+  margin-top: 6px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
 }
 
 textarea {
@@ -80,16 +78,16 @@ select:focus {
   box-shadow: 0 0 0 3px rgba(31,60,136,0.15);
 }
 
-/***********************
- * BUTTONS
- ***********************/
+/* ======================
+   BUTTONS
+   ====================== */
 button {
-  border-radius: 10px;
-  border: none;
   background: var(--primary);
-  color: white;
-  font-weight: 600;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
   padding: 10px 16px;
+  font-weight: 600;
   cursor: pointer;
   transition: 0.2s;
 }
@@ -104,30 +102,30 @@ button.danger {
 
 button:hover {
   opacity: 0.95;
+  transform: translateY(-1px);
 }
 
-/***********************
- * M GRID
- ***********************/
+/* ======================
+   M GRID
+   ====================== */
 .m-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 12px;
 }
 
 .m-grid button {
-  background: white;
-  border: 2px solid var(--primary);
+  background: #fff;
   color: var(--primary);
-  border-radius: 14px;
+  border: 2px solid var(--primary);
   padding: 18px;
+  border-radius: 14px;
   font-size: 16px;
 }
 
 .m-grid button:hover {
   background: var(--primary);
-  color: white;
-  transform: translateY(-3px);
+  color: #fff;
 }
 
 /* Responsive */
@@ -136,23 +134,22 @@ button:hover {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
 @media (max-width: 480px) {
   .m-grid {
     grid-template-columns: 1fr;
   }
 }
 
-/***********************
- * TABLES
- ***********************/
+/* ======================
+   TABLE
+   ====================== */
 table {
-  border-collapse: collapse;
   width: 100%;
+  border-collapse: collapse;
 }
 
 th {
-  background: #f0f2f7;
+  background: #eef2ff;
   font-weight: 700;
 }
 
@@ -162,29 +159,27 @@ th {
   border-bottom: 1px solid #e5e7eb;
 }
 
-/***********************
- * STATUS (NORMALIZED)
- ***********************/
+/* ======================
+   STATUS
+   ====================== */
 .status-Planned {
   color: #ff9800;
   font-weight: 600;
 }
-
 .status-InProgress {
   color: #2196f3;
   font-weight: 600;
 }
-
 .status-Completed {
   color: #4caf50;
   font-weight: 600;
 }
 
-/***********************
- * FISHBONE
- ***********************/
+/* ======================
+   FISHBONE
+   ====================== */
 #diagramContainer {
-  background: white;
+  background: #fff;
   padding: 20px;
   border-radius: 10px;
   overflow-x: auto;
@@ -195,25 +190,18 @@ svg {
 }
 
 svg text {
-  fill: var(--text);
   font-family: monospace;
+  fill: var(--text);
 }
 
-/***********************
- * UTILITIES
- ***********************/
+/* ======================
+   UTILITIES
+   ====================== */
 .muted {
   color: var(--muted);
   font-style: italic;
 }
 
-.toast {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: var(--success);
-  color: white;
-  padding: 14px 18px;
-  border-radius: 10px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+.tabs {
+  margin-top: 20px;
 }
