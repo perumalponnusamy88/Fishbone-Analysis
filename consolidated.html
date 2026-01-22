@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Consolidated Action Plan</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <h2>Consolidated Action Plan</h2>
+  <span id="pid"></span>
+</header>
+
+<section id="actionTable"></section>
+
+<section class="card">
+  <h3>Final Implementation Summary</h3>
+
+  <label>Overall Implementation Plan</label>
+  <textarea id="finalPlan"></textarea>
+
+  <label>Overall Challenges</label>
+  <textarea id="finalChallenges"></textarea>
+
+  <label>Final Timeline</label>
+  <input id="finalTimeline">
+
+  <button onclick="saveFinal()">Save Summary</button>
+</section>
+
+<script src="js/storage.js"></script>
+<script src="js/consolidated.js"></script>
+</body>
+</html>
