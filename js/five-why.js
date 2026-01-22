@@ -21,9 +21,19 @@ function saveFiveWhy() {
   problem.rootCause = rootCause.value;
   problem.impact = impact.value;
 
+  problem.actionPlan = {
+    corrective: corrective.value,
+    preventive: preventive.value,
+    owner: owner.value,
+    targetDate: targetDate.value,
+    challenges: challenges.value,
+    status: status.value
+  };
+
   saveToStorage(pid, data);
-  alert("5 Why saved");
+  alert("Root cause & action plan saved");
 }
+
 
 function goBack() {
   window.history.back();
