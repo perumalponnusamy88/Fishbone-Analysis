@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>M Analysis</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <h2 id="mTitle"></h2>
+  <span id="pid"></span>
+</header>
+
+<section class="card">
+  <label>New Sub-Problem Statement</label>
+  <textarea id="subProblem"></textarea>
+  <button onclick="addSubProblem()">Add Problem</button>
+</section>
+
+<section id="problemList"></section>
+
+<button onclick="goBack()">⬅ Back to Main</button>
+
+<script src="js/storage.js"></script>
+<script src="js/m-analysis.js"></script>
+</body>
+</html>
