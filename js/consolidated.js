@@ -56,3 +56,7 @@ function saveFinal() {
 }
 
 renderTable();
+if (hasData) {
+  data.status = "Completed";
+  saveToStorage(pid, data);
+}
