@@ -42,7 +42,13 @@ const data = {
     alert("Problem saved successfully");
   }
 
-  loadExistingProblems();
+  div.innerHTML = `
+  <strong>${pid}</strong><br>
+  <small>${data.statement || "No statement yet"}</small><br>
+  <small>Status: <b>${data.status || "Not Started"}</b></small><br>
+  <small>Last Updated: ${new Date(data.lastUpdated || data.createdAt).toLocaleString()}</small><br>
+  <button class="secondary" onclick="openProblem('${pid}')">Resume</button>
+`;
 }
 
 // Navigation guards
