@@ -57,5 +57,7 @@ function openFiveWhy(subId) {
 function goBack() {
   window.location.href = "index.html";
 }
-
+data.status = "In Progress";
+data.lastUpdated = new Date().toISOString();
+saveToStorage(pid, data);
 renderList();
