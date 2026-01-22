@@ -1,14 +1,22 @@
+/***********************
+ * THEME VARIABLES
+ ***********************/
 :root {
   --primary: #1f3c88;
-  --secondary: #f4f6f9;
   --accent: #ff9800;
   --success: #4caf50;
   --danger: #e53935;
+
+  --secondary: #f4f6f9;
+  --card: #ffffff;
+
   --text: #2b2b2b;
   --muted: #6b7280;
-  --card: #ffffff;
 }
 
+/***********************
+ * THEME BASE
+ ***********************/
 body {
   background: var(--secondary);
   color: var(--text);
