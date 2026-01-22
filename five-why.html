@@ -24,6 +24,31 @@
 
   <label>Impact Percentage</label>
   <input type="number" id="impact" min="0" max="100">
+<hr>
+
+<h3>Action Plan</h3>
+
+<label>Corrective Action</label>
+<textarea id="corrective"></textarea>
+
+<label>Preventive Action</label>
+<textarea id="preventive"></textarea>
+
+<label>Responsible Person</label>
+<input id="owner">
+
+<label>Target Date</label>
+<input type="date" id="targetDate">
+
+<label>Expected Challenges</label>
+<textarea id="challenges"></textarea>
+
+<label>Status</label>
+<select id="status">
+  <option>Planned</option>
+  <option>In Progress</option>
+  <option>Completed</option>
+</select>
 
   <button onclick="saveFiveWhy()">Save Analysis</button>
 </section>
