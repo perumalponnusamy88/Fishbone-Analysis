@@ -36,30 +36,60 @@ svg.innerHTML = "";
 /***********************
  * DRAW MAIN SPINE
  ***********************/
-drawLine(100, 250, 900, 250);
-drawText(890, 245, data.statement || "Problem Statement", "end");
+const spineStartX = 150;
+const spineEndX = 950;
+const spineY = 250;
+
+drawLine(spineStartX, spineY, spineEndX, spineY);
+drawText(spineEndX - 10, spineY - 5, data.statement || "Problem Statement", "end");
 
 /***********************
  * M DEFINITIONS
  ***********************/
 const ms = ["Man", "Machine", "Method", "Material", "Measurement", "Environment"];
 
+/***********************
+ * BONE SETTINGS
+ ***********************/
+const topY = 130;
+const bottomY = 370;
+
+// 3 evenly spaced connection points on spine
+const spinePoints = [400, 600, 800];
+
 let hasRootCause = false;
 
+/***********************
+ * DRAW BONES
+ ***********************/
 ms.forEach((m, i) => {
-  const y = i < 3 ? 150 : 350;
-  const x = 250 + (i % 3) * 200;
 
-  // Bone
-  drawLine(x, y, 500, 250);
-  drawText(x - 10, y - 8, m);
+  const isTop = i < 3;
+  const index = i % 3;
 
-  // Root causes
+  const startX = 250 + index * 220;
+  const startY = isTop ? topY : bottomY;
+
+  const spineX = spinePoints[index];
+  const spineConnectY = spineY;
+
+  // Draw bone line
+  drawLine(startX, startY, spineX, spineConnectY);
+
+  // Draw category name
+  drawText(startX - 10, startY - 8, m);
+
+  // Draw root causes
   const list = data.analysis[m] || [];
   list.forEach((p, idx) => {
     if (!p.rootCause) return;
+
     hasRootCause = true;
-    drawText(x - 10, y + 15 + idx * 14, shortText(p.rootCause));
+
+    const textOffset = isTop ? 18 : -18;
+    const rootY = startY + (isTop ? 20 : -20) + idx * (isTop ? 14 : -14);
+
+    drawText(startX - 10, rootY, shortText(p.rootCause));
   });
 });
 
@@ -67,7 +97,7 @@ ms.forEach((m, i) => {
  * EMPTY STATE
  ***********************/
 if (!hasRootCause) {
-  drawText(500, 280, "No root causes identified yet", "middle");
+  drawText(550, 290, "No root causes identified yet", "middle");
 }
 
 /***********************
@@ -80,6 +110,7 @@ function drawLine(x1, y1, x2, y2) {
   line.setAttribute("x2", x2);
   line.setAttribute("y2", y2);
   line.setAttribute("stroke", "#333");
+  line.setAttribute("stroke-width", "2");
   svg.appendChild(line);
 }
 
@@ -89,13 +120,14 @@ function drawText(x, y, text, anchor = "start") {
   t.setAttribute("y", y);
   t.setAttribute("font-size", "12");
   t.setAttribute("text-anchor", anchor);
+  t.setAttribute("font-family", "Arial");
   t.textContent = text;
   svg.appendChild(t);
 }
 
 function shortText(text) {
   if (!text) return "";
-  return text.length > 40 ? text.substring(0, 37) + "..." : text;
+  return text.length > 45 ? text.substring(0, 42) + "..." : text;
 }
 
 function goBack() {
